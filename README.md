@@ -13,7 +13,7 @@ Caffeinate yourself and follow the steps: it will all make sense when you are fi
 
 Please read about how to [use](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html) Emacs as a server: it lets you connect to it and evaluate code.
 
-Choose a file in your home directory to acts as your server-socket:
+Specify a full-qualified file in your home directory to acts as your server-socket:
 
 ``` bash
 export EMACSSOCKET="/Users/gcr/server-sockets/emacs.sock"
