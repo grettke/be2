@@ -22,4 +22,3 @@ This project is intended to be a safe, welcoming space for collaboration, and co
 
 - Open a [Pull Request](https://github.com/grettke/moshemal/pulls).
 - Await code review.
-- [grettke](https://www.tibookenthusiasts.org/) will update automatically soon after your pull request is merged.
