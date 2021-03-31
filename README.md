@@ -52,12 +52,15 @@ Load it in your init file:
 source "/Users/gcr/src/moshemal/moshemal.sh"
 ```
 
-Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance:
+Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance. The EXPR must be enclosed in quotes.
 
 ``` bash
-moshemal "(corporate-bs-generator-make)"
-moshemal "(corporate-bs-generator-make)" >> ~/tmp/log.txt
+moshemal '(message "Hello, world.")'
+moshemal '(message "Hello, world.")' >> ~/tmp/log.txt
+moshemal "(+ 1 1)"
 ```
+
+Always consider how you escape your single and double quotes.
 
 ## Contributing
 
