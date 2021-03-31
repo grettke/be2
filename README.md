@@ -43,7 +43,7 @@ Check out the code:
 
 ``` bash
 cd ~/src
-git@github.com:grettke/moshemal.git
+git clone git@github.com:grettke/moshemal.git
 ```
 
 Load it in your init file:
