@@ -1,4 +1,4 @@
-!#/usr/local/bin/emacs
+#!/usr/local/bin/bash
 # shellcheck disable=SC2039,SC2112
 
 function moshemal() {
