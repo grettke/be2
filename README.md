@@ -44,7 +44,6 @@ Check out the code:
 ``` bash
 cd ~/src
 git@github.com:grettke/moshemal.git
-export PATH=$PATH:~/src/moshemal
 ```
 
 Load it in your init file:
