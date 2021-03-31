@@ -56,6 +56,7 @@ Create a new shell and Emacs instance to check for startup errors. Fix any. Eval
 
 ``` bash
 moshemal "(corporate-bs-generator-make)"
+moshemal "(corporate-bs-generator-make)" >> ~/tmp/log.txt
 ```
 
 ## Contributing
