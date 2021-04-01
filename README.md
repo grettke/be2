@@ -157,3 +157,7 @@ This project intends to be a safe, welcoming space for collaboration, and contri
 
 - Open a [Pull Request](https://github.com/grettke/moshemal/pulls).
 - Await code review.
+
+# License
+
+- [[./LICENSE.txt][GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007]].
