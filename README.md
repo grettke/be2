@@ -1,5 +1,5 @@
 <p align="center">
-<h1 align="center">MOre baSH EMacs evAL</h1>
+<h1 align="center">MOre baSH EMacs evAL (MOSHEMAL)</h1>
 <p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance.</p>
 </p>
 
@@ -10,8 +10,6 @@ This script helps you evaluate a single-line Elisp expression on a running local
 ## Setup
 
 Caffeinate yourself and follow the steps: it will all make sense when you are finished.
-
-Please read about how to [use](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html) Emacs as a server: it lets you connect to it and evaluate code.
 
 Specify a full-qualified file in your home directory to acts as your server-socket:
 
@@ -61,6 +59,66 @@ moshemal "(+ 1 1)"
 ```
 
 Always consider how you escape your single and double quotes.
+
+## Resources
+
+- The following are all of the Documentation, Related Projects, References, and Discussion out there.
+- *Entry Format* follows
+- Name and URL of reference:
+  - Description of resource.
+  - Relevance of, comparison to, and discussion about follows.
+
+### GNU Emacs Official
+
+- [GNU Emacs 24.1 NEWS](https://www.gnu.org/software/emacs/news/NEWS.24.1)
+  - Release notes announcing addition of `server-eval-at`.
+  - "The new function `server-eval-at` allows evaluation of Lisp forms on
+named Emacs server instances."
+
+- [Using Emacs as a Server](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html):
+  - "Various programs can invoke your choice of editor to edit a particular piece of text."
+  - Primarily explains how to use `emacsclient`.
+  - Briefly mentions that "it is possible to connect to the server from another Emacs instance and evaluate Lisp expressions on the server, using the `server-eval-at` function" and that "this feature is mainly useful for developers."
+  - That distinction clarifies the primary difference between `emacsclient` and `moshemal`.
+
+### Elisp Packages
+
+- [jwiegley/emacs-async](https://github.com/jwiegley/emacs-async):
+  - "`async.el` is a module for doing asynchronous processing in Emacs."
+  - `async.el` performs asynchronous tasks initiated by the running Emacs instance. For example, it is independently compiling code or sending an email. `moshemal` is connecting to a running Emacs instance to evaluate code. There is no overlap between them.
+
+### Real-World Applications
+
+- [Elnode](https://github.com/nicferrier/elnode.git)
+  - "An evented IO webserver in Emacs Lisp."
+  - From [elnode-rle.el](https://github.com/nicferrier/elnode/blob/master/elnode-rle.el)
+    - "This is an elnode handler and tools for doing asynchrous programming."
+    - "The idea is that you can setup associated child processes and pass them work to do and receive their output over HTTP."
+  - Implements client-server process within Elnode itself.
+- [dockerfile-elnode-Dockerfile for rapid developing Elnode based web-application.](https://github.com/supermomonga/dockerfile-elnode)
+  - Hot-deploy to [Elnode](https://github.com/nicferrier/elnode) running inside of a Docker instance.
+  - Configures an Emacs-server inside the Docker container.
+  - Connect to it with `server-eval-at` for live-coding on the running Elnode server.
+- [Airplay for Emacs](https://github.com/gongo/airplay-el)
+  - "A client for AirPlay Server." (to clarify the name *doesn't* reflect the fact that it is _actually_ an AirPlay server itself)
+  - `airplay-el` uses [simple-httpd](https://github.com/skeeto/emacs-web-server) to act as an [Apple AirPlay](https://www.apple.com/airplay/) server.
+  - Clients control this server by using `server-eval-at` to execute commands to for example play movies or display pictures.
+
+### Articles
+
+- [What’s New in Emacs 24 (part 2)
+By Mickey Petersen](https://masteringemacs.net/article/what-is-new-in-emacs-24-part-2)
+  - Blog post.
+  - "Hmm. There’s a lot of potential locked away in this one command. Large-scale mapreduce clusters are, I suppose, now possible with Emacs thanks to Elisp and the functions `map` and `reduce` :-)"
+  - Totally agreed. Maybe even [The Dining Philosophers](https://en.wikipedia.org/wiki/Dining_philosophers_problem) can benefit from this.
+- [Why is Emacsclient inserting quotes around output strings?](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings)
+  - Title describes question posed.
+  - Discussion trying to determine the relationship between `princ` and `server-eval-at`. Somewhat inconclusive.
+- [print unquoted output to stdout from emacsclient](https://emacs.stackexchange.com/questions/28665/print-unquoted-output-to-stdout-from-emacsclient)
+  - Title describes question posed.
+  - Their observation:
+    - `emacsclient` seems to return only the result of the evaluated code.
+    - `server-eval-at` seems to return the value printed to `stdout`.
 
 ## Contributing
 
