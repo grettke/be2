@@ -3,21 +3,36 @@
 <p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance.</p>
 </p>
 
-## Usage
+## About
 
-This script helps you evaluate a single-line Elisp expression on a running local Emacs instance.
+This script helps you evaluate a single-line Elisp expression on a running local Emacs instance from a Bash shell.
 
-## Setup
+## Requirements And Compatibility
+
+- Unix like operating system
+  - Tested on MacOS 10.13.
+- Emacs
+  - MOSHEMAL is tested against Emacs 26.
+    - MOSHEMAL only uses libraries included with Emacs.
+- Shell
+  - MOSHEMAL is tested against Bash 5.0.
+    - Bash-isms are minimal and this script can easily be adapted to your favorite shell.
+- Optionally
+  - `git` to pull the project.
+
+## Installation
 
 Caffeinate yourself and follow the steps: it will all make sense when you are finished.
 
-Specify a full-qualified file in your home directory to acts as your server-socket:
+### Bash
+
+Specify a *full-qualified* file in your home director to act as your server-socket file:
 
 ``` bash
 export EMACSSOCKET="/Users/gcr/server-sockets/emacs.sock"
 ```
 
-Configure the socket:
+Configure the socket restricting access permissions to only yourself:
 
 ``` bash
 mkdir ~/server-sockets/
@@ -25,6 +40,8 @@ cd ~/server-sockets/
 touch emacs.sock
 chmod 700 emacs.sock
 ```
+
+### Emacs
 
 Configure Emacs to start it's server on the socket:
 
@@ -35,6 +52,8 @@ Configure Emacs to start it's server on the socket:
 
 Either evaluate that or restart Emacs.
 
+### MOSHEMAL
+
 Verify the socket file exists with the correct permissions.
 
 Check out the code:
@@ -44,10 +63,10 @@ cd ~/src
 git clone git@github.com:grettke/moshemal.git
 ```
 
-Load it in your init file:
+Load it in:
 
 ``` bash
-source "/Users/gcr/src/moshemal/moshemal.sh"
+source "$EMACSSOCKET=""
 ```
 
 Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance. The EXPR must be enclosed in quotes.
