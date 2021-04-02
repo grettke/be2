@@ -162,4 +162,4 @@ This project intends to be a safe, welcoming space for collaboration, and contri
 
 # License
 
-- [[./LICENSE.txt][GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007]].
+- [GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007](./LICENSE.txt).
