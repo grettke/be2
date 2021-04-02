@@ -124,7 +124,7 @@ fi
 
 The best way to have fun now is to run that code in different situations. For example, try logging in to a terminal and running it, putting it in a script and calling it from the terminal, running it via `cron`, and thoroughly executing the shell from another process. That is likely to cover all combinations of shell types. If you read this far, then check out one of the most fun ways you can work with a Non-Interactive Non-Login Shell.
 
-[Keyboard Maestro](https://www.keyboardmaestro.com/main/) is a brilliant application. While it makes it easy to do everything, I only wanted it to do one thing: let me evaluate code in Emacs using keyboard shortcuts anywhere in any application.
+[Keyboard Maestro](https://www.keyboardmaestro.com/main/) is a brilliant application. It's got an infinite free evaluation period because there are so many different ways you can use it. While it makes it easy to do everything, I only wanted it to do one thing: let me evaluate code in Emacs using Keyboard Maestro keyboard shortcuts anywhere in any application.
 
 Here is all it takes:
 - Create a new macro.
