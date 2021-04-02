@@ -74,7 +74,7 @@ export BE2HOME="/Users/gcr/src/be2"
 source "BE2HOME/be2lib.sh"
 ```
 
-Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on the Emacs instance. The EXPR must be enclosed in quotes.
+Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on the Emacs instance. The EXPR must be enclosed in quotes. *Carefully* escape your single and double quotes!
 
 Call `be2` stand-alone:
 
@@ -91,8 +91,6 @@ Call `be2` inside other code:
 ``` bash
 printf "How many is binary? $(be2 '(+ 1 1)')\n"
 ```
-
-Always consider how you escape your single and double quotes.
 
 ## Resources
 
