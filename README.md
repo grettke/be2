@@ -138,7 +138,7 @@ Now, whenever you type "emacsSample" the results of `EXPR` will be evaluated ins
 
 Suddenly you get the best of both worlds: 100% of Emacs available on 100% of your computer. It works brilliantly. I hope you have a lot of fun!
 
-## Resources
+## Research & Justification For Approach
 
 - The following are all of the Documentation, Related Projects, References, and Discussion out there.
 - *Entry Format* follows
