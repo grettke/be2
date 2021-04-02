@@ -129,7 +129,7 @@ The best way to have fun now is to run that code in different situations. For ex
 Here is all it takes:
 - Create a new macro.
 - Triggered by 'This String Is Typed': "emacsSample"
-- Add an action: Execute Shell Script.
+- Add an action: [Execute Shell Script](https://wiki.keyboardmaestro.com/action/Execute_a_Shell_Script).
 - Choose "Execute text script" and "type results".
 - Then add this `~/src/be2/be2 "(EXPR)"` to the input box.
   - `EXPR` can be any Elisp code but keep it simple: start with `(+ 1 1)`
