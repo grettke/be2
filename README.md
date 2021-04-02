@@ -1,5 +1,5 @@
 <p align="center">
-<h1 align="center">MOre baSH EMacs evAL (MOSHEMAL)</h1>
+<h1 align="center">Bash Emacs Eval (BE2)</h1>
 <p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance.</p>
 </p>
 
@@ -12,11 +12,10 @@ This script helps you evaluate a single-line Elisp expression on a running local
 - Unix like operating system
   - Tested on MacOS 10.13.
 - Emacs
-  - MOSHEMAL is tested against Emacs 26.
-    - MOSHEMAL only uses libraries included with Emacs.
+  - BE2 is tested against Emacs 26.
+  - BE2 only uses libraries included with Emacs.
 - Shell
-  - MOSHEMAL is tested against Bash 5.0.
-    - Bash-isms are minimal and this script can easily be adapted to your favorite shell.
+  - BE2 is tested against Bash 5.0.
 - Optionally
   - `git` to pull the project.
 
@@ -33,7 +32,7 @@ This is how to use it interactively like you would expect.
 Specify a *fully-qualified* file in your home directory to act as your server-socket file:
 
 ``` bash
-export MOSHEMALSOCKET="/Users/gcr/server-sockets/emacs.sock"
+export BE2SOCKET="/Users/gcr/server-sockets/emacs.sock"
 ```
 
 Configure the socket restricting access permissions to only yourself:
@@ -49,11 +48,11 @@ chmod 700 emacs.sock
 Configure Emacs to start it's server on the socket:
 
 ``` emacs-lisp
-(setq server-name (getenv "MOSHEMALSOCKET"))
+(setq server-name (getenv "BE2SOCKET"))
 (server-start)
 ```
 
-#### MOSHEMAL
+#### BE2
 
 Close and start a new shell.
 
@@ -65,23 +64,23 @@ Check out the code:
 
 ``` bash
 cd ~/src
-git clone git@github.com:grettke/moshemal.git
+git clone git@github.com:grettke/be2.git
 ```
 
 Load it in:
 
 ``` bash
-export MOSHEMALHOME="/Users/gcr/src/moshemal"
-source "MOSHEMALHOME/moshemallib.sh"
+export BE2HOME="/Users/gcr/src/be2"
+source "BE2HOME/be2lib.sh"
 ```
 
 Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on the Emacs instance. The EXPR must be enclosed in quotes.
 
 ``` bash
-moshemal '(message "Hello, world.")'
-moshemal '(message "Hello, world.")' >> ~/tmp/log.txt
-moshemal "(+ 1 1)"
-printf "How many is binary? $(moshemal '(+ 1 1)')\n"
+be2 '(message "Hello, world.")'
+be2 '(message "Hello, world.")' >> ~/tmp/log.txt
+be2 "(+ 1 1)"
+printf "How many is binary? $(be2 '(+ 1 1)')\n"
 ```
 
 Always consider how you escape your single and double quotes.
@@ -105,13 +104,13 @@ named Emacs server instances."
   - "Various programs can invoke your choice of editor to edit a particular piece of text."
   - Primarily explains how to use `emacsclient`.
   - Briefly mentions that "it is possible to connect to the server from another Emacs instance and evaluate Lisp expressions on the server, using the `server-eval-at` function" and that "this feature is mainly useful for developers."
-  - That distinction clarifies the primary difference between `emacsclient` and `moshemal`.
+  - That distinction clarifies the primary difference between `emacsclient` and `be2`.
 
 ### Elisp Packages
 
 - [jwiegley/emacs-async](https://github.com/jwiegley/emacs-async):
   - "`async.el` is a module for doing asynchronous processing in Emacs."
-  - `async.el` performs asynchronous tasks initiated by the running Emacs instance. For example, it is independently compiling code or sending an email. `moshemal` is connecting to a running Emacs instance to evaluate code. There is no overlap between them.
+  - `async.el` performs asynchronous tasks initiated by the running Emacs instance. For example, it is independently compiling code or sending an email. `be2` is connecting to a running Emacs instance to evaluate code. There is no overlap between them.
 
 ### Real-World Applications
 
@@ -148,21 +147,21 @@ By Mickey Petersen](https://masteringemacs.net/article/what-is-new-in-emacs-24-p
 
 ## Contributing
 
-[Feature Requests](https://github.com/grettke/moshemal/issues/new/choose) and [Bug Reports](https://github.com/grettke/moshemal/issues/new/choose) are welcome.
+[Feature Requests](https://github.com/grettke/be2/issues/new/choose) and [Bug Reports](https://github.com/grettke/be2/issues/new/choose) are welcome.
 
-This project intends to be a safe, welcoming space for collaboration, and contributors must adhere to [our Code of Conduct](https://github.com/grettke/moshemal/blob/master/CODE_OF_CONDUCT.md).
+This project intends to be a safe, welcoming space for collaboration, and contributors must adhere to [our Code of Conduct](https://github.com/grettke/be2/blob/master/CODE_OF_CONDUCT.md).
 
 ### Submitting content changes:
 
 #### By Hand
 
-- Open a [Feature Request](https://github.com/grettke/moshemal/issues/new/choose).
+- Open a [Feature Request](https://github.com/grettke/be2/issues/new/choose).
 - Fill out the questionnaire.
 - Review and discuss the request further.
 
 #### Via Git
 
-- Open a [Pull Request](https://github.com/grettke/moshemal/pulls).
+- Open a [Pull Request](https://github.com/grettke/be2/pulls).
 - Await code review.
 
 # License

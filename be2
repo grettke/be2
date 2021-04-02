@@ -1,0 +1,8 @@
+#!/usr/local/bin/bash
+
+export BE2SOCKET="/Users/gcr/server-sockets/emacs.sock"
+export BE2LHOME="/Users/gcr/src/be2"
+
+source "$BE2HOME/be2lib.sh"
+
+be2 "$1"
