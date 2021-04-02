@@ -23,9 +23,13 @@ This script helps you evaluate a single-line Elisp expression on a running local
 
 Caffeinate yourself and follow the steps: it will all make sense when you are finished.
 
-### Command Line Setup
+### Required Setup
 
-This is how to use it interactively like you would expect.
+This setup works for when you log in using for example your favorite terminal app or over SSH. It configures your setup so you can:
+- Call `be2` directly from the terminal.
+- Call `be2` within a shell script.
+
+This is how to use it interactively like you would expect for both login and non-login shells.
 
 #### Bash
 
