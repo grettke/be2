@@ -26,10 +26,10 @@ Caffeinate yourself and follow the steps: it will all make sense when you are fi
 
 ### Bash
 
-Specify a *fully-qualified* file in your home director to act as your server-socket file:
+Specify a *fully-qualified* file in your home directory to act as your server-socket file:
 
 ``` bash
-export EMACSSOCKET="/Users/gcr/server-sockets/emacs.sock"
+export MOSHEMALSOCKET="/Users/gcr/server-sockets/emacs.sock"
 ```
 
 Configure the socket restricting access permissions to only yourself:
@@ -46,7 +46,7 @@ chmod 700 emacs.sock
 Configure Emacs to start it's server on the socket:
 
 ``` emacs-lisp
-(setq server-name (getenv "EMACSSOCKET"))
+(setq server-name (getenv "MOSHEMALSOCKET"))
 (server-start)
 ```
 
@@ -66,7 +66,7 @@ git clone git@github.com:grettke/moshemal.git
 Load it in:
 
 ``` bash
-source "$EMACSSOCKET=""
+source "$MOSHEMALSOCKET""
 ```
 
 Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance. The EXPR must be enclosed in quotes.
