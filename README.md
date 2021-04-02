@@ -1,6 +1,6 @@
 <p align="center">
 <h1 align="center">Bash Emacs Eval (BE2)</h1>
-<p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance.</p>
+<p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance from Bash.</p>
 </p>
 
 ## About
