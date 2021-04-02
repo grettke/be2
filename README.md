@@ -96,6 +96,48 @@ Call `be2` inside other code:
 printf "How many is binary? $(be2 '(+ 1 1)')\n"
 ```
 
+### For Non-Interactive Non-Login Shells
+
+The first time you learn about Non-Interactive Non-Login Shells it can be very surprising. Fortunately there are a lot of great resources explaining why the exist, how they work, and how to configure them. The best place to start is with a single resource that thoroughly explains everything you need to learn.
+
+That resource is [this](https://unix.stackexchange.com/questions/170493/login-non-login-and-interactive-non-interactive-shells#170499)! Please read it a few times to take in the difference between shell types. Soon you will find the differences are pretty straightforward. It can also have fun to run some code and see for yourself what is what.
+
+Here is how to determine for yourself exactly how a shell is configured:
+
+- Is this shell an: Interactive Shell?
+``` bash
+if [ -z "$PS1" ]; then
+  printf "This shell is *not* interactive.\n"
+else
+  printf "This shell *is* interactive.\n"
+fi
+```
+
+- Is this shell a: Login Shell?
+``` bash
+if shopt login_shell | grep "on"; then
+  printf "This *is* a login shell.\n"
+else
+  printf "This is *not* a login shell.\n"
+fi
+```
+
+The best way to have fun now is to run that code in different situations. For example, try logging in to a terminal and running it, putting it in a script and calling it from the terminal, running it via `cron`, and thoroughly executing the shell from another process. That is likely to cover all combinations of shell types. If you read this far, then check out one of the most fun ways you can work with a Non-Interactive Non-Login Shell.
+
+[Keyboard Maestro](https://www.keyboardmaestro.com/main/) is a brilliant application. While it makes it easy to do everything, I only wanted it to do one thing: let me evaluate code in Emacs using keyboard shortcuts anywhere in any application.
+
+Here is all it takes:
+- Create a new macro.
+- Triggered by 'This String Is Typed': "emacsSample"
+- Add an action: Execute Shell Script.
+- Choose "Execute text script" and "type results".
+- Then add this `~/src/be2/be2 "(EXPR)"` to the input box.
+  - `EXPR` can be any Elisp code but keep it simple: start with `(+ 1 1)`
+
+Now, whenever you type "emacsSample" the results of `EXPR` will be evaluated inside Emacs and typed into your computer.
+
+Suddenly you get the best of both worlds: 100% of Emacs available on 100% of your computer. It works brilliantly. I hope you have a lot of fun!
+
 ## Resources
 
 - The following are all of the Documentation, Related Projects, References, and Discussion out there.
