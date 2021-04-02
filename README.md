@@ -49,9 +49,11 @@ Configure Emacs to start it's server on the socket:
 (server-start)
 ```
 
-Either evaluate that or restart Emacs.
-
 ### MOSHEMAL
+
+Close and start a new shell.
+
+Start Emacs.
 
 Verify the socket file exists with the correct permissions.
 
@@ -69,7 +71,7 @@ export MOSHEMALHOME="/Users/gcr/src/moshemal"
 source "MOSHEMALHOME/moshemallib.sh"
 ```
 
-Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance. The EXPR must be enclosed in quotes.
+Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on the Emacs instance. The EXPR must be enclosed in quotes.
 
 ``` bash
 moshemal '(message "Hello, world.")'
