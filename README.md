@@ -24,7 +24,11 @@ This script helps you evaluate a single-line Elisp expression on a running local
 
 Caffeinate yourself and follow the steps: it will all make sense when you are finished.
 
-### Bash
+### Command Line Setup
+
+This is how to use it interactively like you would expect.
+
+#### Bash
 
 Specify a *fully-qualified* file in your home directory to act as your server-socket file:
 
@@ -40,7 +44,7 @@ cd ~/server-sockets/
 touch emacs.sock
 chmod 700 emacs.sock
 ```
-### Emacs
+#### Emacs
 
 Configure Emacs to start it's server on the socket:
 
@@ -49,7 +53,7 @@ Configure Emacs to start it's server on the socket:
 (server-start)
 ```
 
-### MOSHEMAL
+#### MOSHEMAL
 
 Close and start a new shell.
 
@@ -77,6 +81,7 @@ Create a new shell and Emacs instance to check for startup errors. Fix any. Eval
 moshemal '(message "Hello, world.")'
 moshemal '(message "Hello, world.")' >> ~/tmp/log.txt
 moshemal "(+ 1 1)"
+printf "How many is binary? $(moshemal '(+ 1 1)')\n"
 ```
 
 Always consider how you escape your single and double quotes.
