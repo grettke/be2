@@ -76,10 +76,19 @@ source "BE2HOME/be2lib.sh"
 
 Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on the Emacs instance. The EXPR must be enclosed in quotes.
 
+Call `be2` stand-alone:
+
 ``` bash
 be2 '(message "Hello, world.")'
+# Results go to STDOUT just like you expect.
 be2 '(message "Hello, world.")' >> ~/tmp/log.txt
 be2 "(+ 1 1)"
+be2 "emacs-version"
+```
+
+Call `be2` inside other code:
+
+``` bash
 printf "How many is binary? $(be2 '(+ 1 1)')\n"
 ```
 
