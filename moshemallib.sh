@@ -3,7 +3,7 @@
 function moshemal() {
   if [ "$#" -ne 1 ] || [ -z "$1" ] ; then
     printf "Evaluate a single-line EXPR on a local Emacs instance defined in the variable MOSHEMALSOCKET.\n"
-    printf "Usage: %s EXPR.\n" "${FUNCNAME[0]} "
+    printf "Usage: %sEXPR.\n" "${FUNCNAME[0]} "
     return 1
   fi
   local code="$1"
