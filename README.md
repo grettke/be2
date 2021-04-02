@@ -5,7 +5,9 @@
 
 ## About
 
-This script helps you evaluate a single-line Elisp expression on a running local Emacs instance from a Bash shell. You can't do it like this using `emacsclient` even though they both `EVAL` code.
+This script helps you evaluate a single-line Elisp expression on a running local Emacs instance from a Bash shell.
+
+You can't do it like this using `emacsclient` even though they both `EVAL` code.
 
 ## Requirements And Compatibility
 
