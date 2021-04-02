@@ -26,7 +26,7 @@ Caffeinate yourself and follow the steps: it will all make sense when you are fi
 
 ### Bash
 
-Specify a *full-qualified* file in your home director to act as your server-socket file:
+Specify a *fully-qualified* file in your home director to act as your server-socket file:
 
 ``` bash
 export EMACSSOCKET="/Users/gcr/server-sockets/emacs.sock"
