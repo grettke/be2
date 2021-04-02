@@ -40,7 +40,6 @@ cd ~/server-sockets/
 touch emacs.sock
 chmod 700 emacs.sock
 ```
-
 ### Emacs
 
 Configure Emacs to start it's server on the socket:
@@ -66,7 +65,8 @@ git clone git@github.com:grettke/moshemal.git
 Load it in:
 
 ``` bash
-source "$MOSHEMALSOCKET""
+export MOSHEMALHOME="/Users/gcr/src/moshemal"
+source "MOSHEMALHOME/moshemallib.sh"
 ```
 
 Create a new shell and Emacs instance to check for startup errors. Fix any. Evaluate some code from the command line on a running Emacs instance. The EXPR must be enclosed in quotes.
