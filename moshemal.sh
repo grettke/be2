@@ -7,6 +7,7 @@ function moshemal() {
     return 1
   fi
   local code="$1"
-  local val=$(/usr/local/bin/emacs --batch --eval "(progn (require 'server) (princ (server-eval-at \"$EMACSSOCKET\" '$code)))")
+  local val
+  val=$(/usr/local/bin/emacs --batch --eval "(progn (require 'server) (princ (server-eval-at \"$EMACSSOCKET\" '$code)))")
   printf "%s\n" "$val"
 }
