@@ -1,29 +1,87 @@
 <p align="center">
-<h1 align="center">Bash Emacs Eval (BE2)</h1>
-<p align="center">Evaluate single-line Elisp expressions on a running local Emacs instance from Bash.</p>
+    <h1 align="center">Bare Emacsclient Eval (BE2)</h1>
+    <p align="center">
+        Get non-quoted results from evaluating on a Emacs server.
+    </p>
 </p>
 
 ## About
 
-This script helps you evaluate a single-line Elisp expression on a running local Emacs instance from a Bash shell.
+`be2` is like an `emacsclient --eval "EXPR"` that returns the value of `EXPR` using `princ` instead of `print` or `prin1`.
 
-You can't do it like this using `emacsclient` even though they both `EVAL` code.
+The results are formatted for a human (unquoted) instead of a computer (quoted).
+
+Consequently you can use the results of `be2 EXPR` just like you would any other shell function.
+
+For example instead of this:
+
+``` bash
+emacsclient --eval 'emacs-version'
+"26.3"
+```
+
+You get this:
+
+``` bash
+be2 'emacs-version'
+26.3
+```
+
+If you want quoted output you are responsible for quoting it yourself:
+
+``` bash
+be2 '(format "%s" emacs-version)'
+"26.3"
+```
+
+## Explanation
+
+Shell functions typically don't automatically quote their results. Automatically quoting them can result in unpredictable behavior in the function's caller. `be2` adheres to this best practice of returning the unquoted result of the evaluated code. If you wanted a quoted result of evaluted code you need to quote it yourself. Why does `emacsclient --eval` seem to quote its results in the first place though?
+
+[Apparently](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings) when you run `emacsclient --eval` it returns the value of the expression using either [`print`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
+
+> The `print` function is a convenient way of printing.
+> It outputs the printed representation of `object` to `stream`,
+> printing in addition one newline before `object` and another after it.
+> Quoting characters are used.
+> `print` returns object.
+
+or [`prin1`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
+
+> This function outputs the printed representation
+> of `object` to `stream`.
+> It does not print newlines to separate output as `print` does,
+> but it does use quoting characters just like `print`.
+> It returns `object`.
+
+both output a printed representation of `object` for the Elisp [`read`'er](https://www.gnu.org/software/emacs/manual/html_node/elisp/Streams-Intro.html).
+
+[`princ`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html):
+
+> This function outputs the printed representation of
+> `object` to `stream`. It returns `object`.
+>
+> This function is intended to produce output that is
+> readable by people, not by `read`, so it doesn’t insert quoting
+> characters and doesn’t put double-quotes around the contents of
+> strings. It does not add any spacing between calls.
+
+on the other hand outputs a printed representation of `object` for a human to read.
+
+`be2` uses `princ` to produce the expected human-readable printed representation of an `object` other shell functions work with results in a form they expected preventin unpredictable behavior.
 
 ## Requirements And Compatibility
 
 - Unix like operating system
   - Tested on MacOS 10.13.
 - Emacs
-  - BE2 is tested against Emacs 26.
-  - BE2 only uses libraries included with Emacs.
+  - Tested on Emacs 26.
 - Shell
-  - BE2 is tested against Bash 5.0.
-- Optionally
-  - `git` to pull the project.
+  - Tested on Bash 5.x.
 
 ## Installation
 
-Caffeinate yourself and follow the steps: it will all make sense when you are finished.
+These setup notes include all of the steps common to setting up _any_ Emacs server along with the BE2 specific steps.
 
 ### Required Setup
 
@@ -100,6 +158,19 @@ printf "How many is binary? $(be2 '(+ 1 1)')\n"
 
 ### For Non-Interactive Non-Login Shells
 
+The default configuration of Non-Interactive Non-Login shells is to neither perform the Bash [startup file sequence](https://www.gnu.org/software/bash/manual/html_node/Bash-Startup-Files.html) nor allow any interaction ([`PS1`](https://www.gnu.org/software/bash/manual/bash.html#Bash-Variables) is undefined). Consequently you need to define `PATH` and `be2` specific variables within the calling code, instead or relying on your startup files. Fortunately `be` already accounts for this. To use `be2` in Non-Interactive Non-Login shells simply define two variables and `source` the `be2` library file:
+
+``` bash
+export BE2SOCKET="/Users/gcr/server-sockets/emacs.sock"
+export BE2HOME="/Users/gcr/src/be2"
+
+source "$BE2HOME/be2lib.sh"
+```
+
+An example of how to write a script using this approach is included in the project directory named `be2`. It simply passes its arguments directly to the `be2` function: perfect for using your `be2` configuration as a shell-script in a Non-Interactive Non-Login shell.
+
+#### More About Non-Interactive Non-Login Shells
+
 The first time you learn about Non-Interactive Non-Login Shells it can be very surprising. Fortunately there are a lot of great resources explaining why the exist, how they work, and how to configure them. The best place to start is with a single resource that thoroughly explains everything you need to learn.
 
 That resource is [this](https://unix.stackexchange.com/questions/170493/login-non-login-and-interactive-non-interactive-shells#170499)! Please read it a few times to take in the difference between shell types. Soon you will find the differences are pretty straightforward. It can also have fun to run some code and see for yourself what is what.
@@ -123,82 +194,25 @@ else
   printf "This is *not* a login shell.\n"
 fi
 ```
-
 The best way to have fun now is to run that code in different situations. For example, try logging in to a terminal and running it, putting it in a script and calling it from the terminal, running it via `cron`, and thoroughly executing the shell from another process. That is likely to cover all combinations of shell types. If you read this far, then check out one of the most fun ways you can work with a Non-Interactive Non-Login Shell.
 
-[Keyboard Maestro](https://www.keyboardmaestro.com/main/) is a brilliant application. It's got an infinite free evaluation period because there are so many different ways you can use it. While it makes it easy to do everything, I only wanted it to do one thing: let me evaluate code in Emacs using Keyboard Maestro keyboard shortcuts anywhere in any application.
+#### Keyboard Maestro
+
+[Keyboard Maestro](https://www.keyboardmaestro.com/main/) is a brilliant application. It's got an infinite free evaluation period because there are so many different ways you can use it. While it makes it easy to do everything, I only wanted it to do one thing: let me evaluate code in Emacs using Keyboard Maestro keyboard shortcuts anywhere in any application. Since Keyboard Macro can execute shell scripts in a Non-Interactive Non-Login Shell it can use `be2` just like any other program.
 
 Here is all it takes:
 - Create a new macro.
 - Triggered by 'This String Is Typed': "emacsSample"
 - Add an action: [Execute Shell Script](https://wiki.keyboardmaestro.com/action/Execute_a_Shell_Script).
 - Choose "Execute text script" and "type results".
-- Then add this `~/src/be2/be2 "(EXPR)"` to the input box.
+- Then add this `~/src/be2/be2 "EXPR"` to the input box.
   - `EXPR` can be any Elisp code but keep it simple: start with `(+ 1 1)`
+
+Test it out first by choosing to ""display results in a window"". You should get a poup window with `2` in it. Once you've got that working change it back to "type results".
 
 Now, whenever you type "emacsSample" the results of `EXPR` will be evaluated inside Emacs and typed into your computer.
 
 Suddenly you get the best of both worlds: 100% of Emacs available on 100% of your computer. It works brilliantly. I hope you have a lot of fun!
-
-## Research & Justification For Approach
-
-- The following are all of the Documentation, Related Projects, References, and Discussion out there.
-- *Entry Format* follows
-- Name and URL of reference:
-  - Description of resource.
-  - Relevance of, comparison to, and discussion about follows.
-
-### GNU Emacs Official
-
-- [GNU Emacs 24.1 NEWS](https://www.gnu.org/software/emacs/news/NEWS.24.1)
-  - Release notes announcing addition of `server-eval-at`.
-  - "The new function `server-eval-at` allows evaluation of Lisp forms on
-named Emacs server instances."
-
-- [Using Emacs as a Server](https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html):
-  - "Various programs can invoke your choice of editor to edit a particular piece of text."
-  - Primarily explains how to use `emacsclient`.
-  - Briefly mentions that "it is possible to connect to the server from another Emacs instance and evaluate Lisp expressions on the server, using the `server-eval-at` function" and that "this feature is mainly useful for developers."
-  - That distinction clarifies the primary difference between `emacsclient` and `be2`.
-
-### Elisp Packages
-
-- [jwiegley/emacs-async](https://github.com/jwiegley/emacs-async):
-  - "`async.el` is a module for doing asynchronous processing in Emacs."
-  - `async.el` performs asynchronous tasks initiated by the running Emacs instance. For example, it is independently compiling code or sending an email. `be2` is connecting to a running Emacs instance to evaluate code. There is no overlap between them.
-
-### Real-World Applications
-
-- [Elnode](https://github.com/nicferrier/elnode.git)
-  - "An evented IO webserver in Emacs Lisp."
-  - From [elnode-rle.el](https://github.com/nicferrier/elnode/blob/master/elnode-rle.el)
-    - "This is an elnode handler and tools for doing asynchrous programming."
-    - "The idea is that you can setup associated child processes and pass them work to do and receive their output over HTTP."
-  - Implements client-server process within Elnode itself.
-- [dockerfile-elnode-Dockerfile for rapid developing Elnode based web-application.](https://github.com/supermomonga/dockerfile-elnode)
-  - Hot-deploy to [Elnode](https://github.com/nicferrier/elnode) running inside of a Docker instance.
-  - Configures an Emacs-server inside the Docker container.
-  - Connect to it with `server-eval-at` for live-coding on the running Elnode server.
-- [Airplay for Emacs](https://github.com/gongo/airplay-el)
-  - "A client for AirPlay Server." (to clarify the name *doesn't* reflect the fact that it is _actually_ an AirPlay server itself)
-  - `airplay-el` uses [simple-httpd](https://github.com/skeeto/emacs-web-server) to act as an [Apple AirPlay](https://www.apple.com/airplay/) server.
-  - Clients control this server by using `server-eval-at` to execute commands to for example play movies or display pictures.
-
-### Articles
-
-- [What’s New in Emacs 24 (part 2)
-By Mickey Petersen](https://masteringemacs.net/article/what-is-new-in-emacs-24-part-2)
-  - Blog post.
-  - "Hmm. There’s a lot of potential locked away in this one command. Large-scale mapreduce clusters are, I suppose, now possible with Emacs thanks to Elisp and the functions `map` and `reduce` :-)"
-  - Totally agreed. Maybe even [The Dining Philosophers](https://en.wikipedia.org/wiki/Dining_philosophers_problem) can benefit from this.
-- [Why is Emacsclient inserting quotes around output strings?](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings)
-  - Title describes question posed.
-  - Discussion trying to determine the relationship between `princ` and `server-eval-at`. Somewhat inconclusive.
-- [print unquoted output to stdout from emacsclient](https://emacs.stackexchange.com/questions/28665/print-unquoted-output-to-stdout-from-emacsclient)
-  - Title describes question posed.
-  - Their observation:
-    - `emacsclient` seems to return only the result of the evaluated code.
-    - `server-eval-at` seems to return the value printed to `stdout`.
 
 ## Contributing
 
