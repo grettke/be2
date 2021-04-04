@@ -5,6 +5,14 @@
     </p>
 </p>
 
+## 𝙏𝙇𝘿𝙍
+
+Couldn't make `emacsclient`'s `eval` return unquoted value so use [server-eval-at](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings) instead: `emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" 'emacs-version)))"`.
+
+*Nothing further* beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.
+
+Everything _following_ provides some examples, explains the context and justification for the approach, and finally walks through my _highly personalized process_ to configuring `be2` for use in both the shell and [Keyboard Maestro](https://www.keyboardmaestro.com/main/).
+
 ## About
 
 `be2` is like an `emacsclient --eval "EXPR"` that returns the value of `EXPR` using `princ` instead of `print` or `prin1`.
