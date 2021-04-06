@@ -325,6 +325,7 @@ Here is how it works:
     - It returns the normal result
 - In `server-eval-at` The Client `read`'s the result of `server-eval-and-print`. Since The Client is running in batch mode the value is output to directly to `STDOUT` unquoted.
 - This is why `server-eval-at` doesn't quote its results and why `be2` is necessary.
+- This is also why when you run in interactive mode you don't need to wrap the `eval` with a `princ` in the helper script but you do when it is non-interactive: otherwise Emacs doesn't have a normal ouputstream to write to.
 
 ### Are `emacsclient` and Emacs the same thing?
 
