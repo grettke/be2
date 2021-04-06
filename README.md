@@ -11,7 +11,8 @@ Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-a
 
 
 ``` emacs-lisp
-emacs --batch --eval "(progn (require 'server) (server-eval-at \"server\" '$code))"
+emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" 'emacs-version)))".
+
 ```
 
 **Nothing further beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.**
