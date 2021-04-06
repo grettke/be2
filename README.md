@@ -7,7 +7,7 @@
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` instead:
+Couldn't make `emacsclient`'s `eval` return an unquoted value so use `server-eval-at` instead like this:
 
 
 ``` emacs-lisp
@@ -15,10 +15,9 @@ emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" '
 
 ```
 
+**Nothing further beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.**
 
-*Nothing further* beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.
-
-Everything _following_ provides some examples, explains the context and justification for the approach, and finally walks through my _highly personalized process_ to configuring `be2` for use in both the shell and [Keyboard Maestro](https://www.keyboardmaestro.com/main/).
+Everything _following_ provides some examples, explains the context and justification for the approach, and finally walks through my _highly personalized process_ to configuring `be2` for use in both the Bash shell and [Keyboard Maestro](https://www.keyboardmaestro.com/main/).
 
 ## About
 
