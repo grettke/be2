@@ -1,7 +1,7 @@
 <p align="center">
     <h1 align="center">Bare Emacsclient Eval (BE2)</h1>
     <p align="center">
-        Get non-quoted results eval'ing on an Emacs server.
+        Get an unquoted eval result from an Emacs server.
     </p>
 </p>
 
