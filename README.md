@@ -7,7 +7,7 @@
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` instead:
+Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` in batch-mode instead because it directs the printer output directory (unquoted) to `STDOUT`:
 
 
 ``` emacs-lisp
@@ -327,7 +327,7 @@ Here is how it works:
   - It sends the `-eval` message with the `EXPR` you sent it
     - This enters `server-eval-and-print` to handle the request
     - It returns the normal result
-- In `server-eval-at` The Client `read`'s the result of `server-eval-and-print`. Since The Client is running in batch mode the value is output to directly to `STDOU` unquoted.
+- In `server-eval-at` The Client `read`'s the result of `server-eval-and-print`. Since The Client is running in batch mode the value is output to directly to `STDOUT` unquoted.
 - This is why `server-eval-at` doesn't quote its results and why `be2` is necessary.
 
 ### Are `emacsclient` and Emacs the same thing?
