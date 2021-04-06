@@ -8,6 +8,6 @@ function be2() {
   fi
   local code="$1"
   local val
-  val=$(/usr/local/bin/emacs --batch --eval "(progn (require 'server) (server-eval-at \"$BE2SOCKET\" '$code))")
+  val=$(/usr/local/bin/emacs --batch --eval "(progn (require 'server) (princ (server-eval-at \"$BE2SOCKET\" '$code)))")
   printf "%s\n" "$val"
 }
