@@ -1,13 +1,20 @@
 <p align="center">
     <h1 align="center">Bare Emacsclient Eval (BE2)</h1>
     <p align="center">
-        Get non-quoted results evaluating on an Emacs server.
+        Get non-quoted results eval'ing on an Emacs server.
     </p>
 </p>
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return unquoted value so use [server-eval-at](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings) instead: `emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" 'emacs-version)))"`.
+Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` instead:
+
+
+``` emacs-lisp
+emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" 'emacs-version)))".
+
+```
+
 
 *Nothing further* beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.
 
