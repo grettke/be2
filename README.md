@@ -7,13 +7,9 @@
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` in batch-mode instead because it directs the printer output directly (unquoted) to `STDOUT`:
+Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` in batch-mode instead because it directs the printer output directly (unquoted) to `STDOUT` in the single line referenced:
 
-
-``` emacs-lisp
-emacs --batch --eval "(progn (require 'server) (princ (server-eval-at "server" 'emacs-version)))".
-
-```
+[HERE](https://github.com/grettke/be2/blob/b3e7c79bda375bb63ec8de90dec94aa602ce2c0c/be2lib.sh#L11)
 
 **Nothing further beyond 𝙏𝙇𝘿𝙍 is required: it contains the single example necessary to get the desired behavior.**
 
