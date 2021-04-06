@@ -1,13 +1,13 @@
 <p align="center">
     <h1 align="center">Bare Emacsclient Eval (BE2)</h1>
     <p align="center">
-        Get an unquoted eval result from an Emacs server.
+        Make Emacs server eval return unquoted value.
     </p>
 </p>
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return an unquoted value so use `server-eval-at` instead like this:
+Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` instead:
 
 
 ``` emacs-lisp
@@ -25,16 +25,16 @@ Everything _following_ provides some examples, explains the context and justific
 
 The results are formatted for a human (unquoted) instead of a computer (quoted).
 
-Consequently you can use the results of `be2 EXPR` just like you would any other shell function.
+Consequently you can use the results of `be2 EXPR"` just like you would any other shell function.
 
-For example instead of this:
+For example instead of this (note the quoted result):
 
 ``` bash
 emacsclient --eval 'emacs-version'
 "26.3"
 ```
 
-You get this:
+You get this (note the unquoted result):
 
 ``` bash
 be2 'emacs-version'
@@ -47,42 +47,6 @@ If you want quoted output you are responsible for quoting it yourself:
 be2 '(format "%s" emacs-version)'
 "26.3"
 ```
-
-## Explanation
-
-Shell functions typically don't automatically quote their results. Automatically quoting them can result in unpredictable behavior in the function's caller. `be2` adheres to this best practice of returning the unquoted result of the evaluated code. If you wanted a quoted result of evaluted code you need to quote it yourself. Why does `emacsclient --eval` seem to quote its results in the first place though?
-
-[Apparently](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings) when you run `emacsclient --eval` it returns the value of the expression using either [`print`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
-
-> The `print` function is a convenient way of printing.
-> It outputs the printed representation of `object` to `stream`,
-> printing in addition one newline before `object` and another after it.
-> Quoting characters are used.
-> `print` returns object.
-
-or [`prin1`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
-
-> This function outputs the printed representation
-> of `object` to `stream`.
-> It does not print newlines to separate output as `print` does,
-> but it does use quoting characters just like `print`.
-> It returns `object`.
-
-both output a printed representation of `object` for the Elisp [`read`'er](https://www.gnu.org/software/emacs/manual/html_node/elisp/Streams-Intro.html).
-
-[`princ`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html):
-
-> This function outputs the printed representation of
-> `object` to `stream`. It returns `object`.
->
-> This function is intended to produce output that is
-> readable by people, not by `read`, so it doesn’t insert quoting
-> characters and doesn’t put double-quotes around the contents of
-> strings. It does not add any spacing between calls.
-
-on the other hand outputs a printed representation of `object` for a human to read.
-
-`be2` uses `princ` to produce the expected human-readable printed representation of an `object` other shell functions work with results in a form they expected preventin unpredictable behavior.
 
 ## Requirements And Compatibility
 
@@ -227,6 +191,156 @@ Test it out first by choosing to ""display results in a window"". You should get
 Now, whenever you type "emacsSample" the results of `EXPR` will be evaluated inside Emacs and typed into your computer.
 
 Suddenly you get the best of both worlds: 100% of Emacs available on 100% of your computer. It works brilliantly. I hope you have a lot of fun!
+
+## Explanation
+
+Why does this one-line work the way it does?
+
+To make sense of the solution follow the story in this explanation.
+
+###  Goal
+
+Shell functions typically don't automatically quote their results. Automatically quoting them can result in unpredictable behavior in the function's caller. `be2` adheres to this best practice of returning the unquoted result of the evaluated code. If you want a quoted result of evaluted code you need to quote it yourself. Why does `emacsclient --eval` seem to quote its results in the first place though?
+
+### Source Of Solution
+
+[This article](https://emacs.stackexchange.com/questions/9391/why-is-emacsclient-inserting-quotes-around-output-strings) explains that  when you run `emacsclient --eval` it returns the value of the expression from `STDOUT`. Why though? Why is this happening?
+
+### Printing Functions
+
+Its important to understand how Emacs prints object information. There are three common ways to do it. Here is an overview:
+
+Using either [`print`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
+
+> The `print` function is a convenient way of printing.
+> It outputs the printed representation of `object` to `stream`,
+> printing in addition one newline before `object` and another after it.
+> Quoting characters are used.
+> `print` returns object.
+
+or [`prin1`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html)
+
+> This function outputs the printed representation
+> of `object` to `stream`.
+> It does not print newlines to separate output as `print` does,
+> but it does use quoting characters just like `print`.
+> It returns `object`.
+
+output a printed representation of `object` for the Elisp [`read`'er](https://www.gnu.org/software/emacs/manual/html_node/elisp/Streams-Intro.html).
+
+[`princ`](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Functions.html):
+
+> This function outputs the printed representation of
+> `object` to `stream`. It returns `object`.
+>
+> This function is intended to produce output that is
+> readable by people, not by `read`, so it doesn’t insert quoting
+> characters and doesn’t put double-quotes around the contents of
+> strings. It does not add any spacing between calls.
+
+on the other hand outputs a printed representation of `object` for a human to read.
+
+`emacsclient --eval` returns the quoted representation.
+
+`server-eval-set` returns the unquoted representation.
+
+Why?
+
+### Getting To The Code
+
+Debugging the Emacs server is an easy and fun way to learn what is happening in the code. Here is where to start:
+
+- Stop Emacs
+- Back up your server library file `server.el.gz` (assuming you are running a packaged Emacs)
+  - Find your Emacs installation directory by running `which emacs`.
+  - If it is a symbolic link then `ls` on it
+  - Go there and fine the library file
+    - `find . -name server.el.gz`
+    - Back it up:
+      - `cp ./Resources/lisp/server.el.gz ./Resources/lisp/server-ORG.el.gz `
+- Start Emacs again
+- Go to the function `server-start`
+  - Type `C-h f server-eval-at RET`
+  - Go the the `*Help*` window.
+  - Move the cursor to the highlighted text `server.el` and hit RET.
+- Now you are viewing the code for the Emacs server. This is where your journey begins.
+
+### Handling Requests
+
+The Emacs Server (from here referred to as The Server) interacts with Emacs Clients (from here referred to as The Client) in a typical client-server architecture.
+
+Here is how it works:
+
+#### Using `emacsclient`
+
+- From here forward you are working inside of the Emacs that is open in the GUI. This is the one that you do most of your work in. It is The Server. The explanation below explains what happens when `emacsclient` contact The Server to evaluate code. `emacsclient` like the name implies is The Client.
+- You start the server by calling `server-start`
+- Function: `server-start`
+  - Nearly everything you want to learn about The Server starts here.
+  - Fun function to read and study.
+  - Starts a subprocess that sits there and waits for client connections.
+  - Key study point: the network process is configured with
+    - `:filter #'server-process-filter`
+    - So start there
+- Suppose now you use `emacsclient` to connect to The Server and evaluate an expression. The Server handles a connected client in the function `server-process-filter`.
+- Function: `server-process-filter`
+  - Handles client request to evaluate an expression.
+  - The _server_ handles many different commands. We care about `eval`
+    - `'-eval EXPR'
+  Evaluate EXPR as a Lisp expression and return the
+  result in -print commands.`
+  - The _client_ handles many different commands. We care about `print`
+    - `'-print STRING'
+  Print STRING on stdout.  Used to send values
+  returned by -eval.`
+  - Delegates `eval` work to `server-eval-and-print`
+- Function: `server-eval-and-print`
+  - "Eval EXPR and send the result back to client PROC."
+  - Very interesting and brief function that does a lot.
+  - Evalute the code; disable `C-g` until the evalution completes
+  - Create a temp buffer
+  - Redirect standard-out to it
+  - `pp` the result to standard-out (the default output stream)
+    - Uses `princ` to write the object's printed representation so it is unquoted.
+    - That means "26.3" is represented as "26.3" because it is a string. This string value, the entire sequence of characters "double-quote-26.3-double-quote" _is_ the value that will be returned so Emacs knows to retain the double quotes.
+  - Get the buffer contents
+  - Prepare a special "server quote" of them and call `-print` on the client: thus returning the result of evaluation
+- This is how `emacsclient` handles `--eval`. This explains why results are quoted: because `server-eval-and-print` returns then that way. That is fine but we want unquoted results.
+
+#### Using `server-eval-at`
+
+- From here forward you are working at the command-line with `be2`.
+- `be` is now The Client
+  - It start Emacs
+  - Loads `server.el` and connects to The Server.
+  - Evaluates the code passed by the user using `server-eval-at`
+- `be2` starts starts an Emacs instance in [batch mode](https://www.gnu.org/software/emacs/manual/html_node/elisp/Batch-Mode.html). In batch mode Emacs will behave like this:
+> Any Lisp program output that would normally go to the echo area, either
+> using `message`, or using `prin1`, etc., with `t` as the stream (see [Output Streams](https://www.gnu.org/software/emacs/manual/html_node/elisp/Output-Streams.html)), goes instead to Emacs’s standard descriptors when in batch mode:  `message` writes to the standard error descriptor, while `prin1` and other print functions write to the standard output. Similarly, input that would normally come from the minibuffer is read from the standard input descriptor. Thus, Emacs behaves much like a noninteractive application program. (The echo area output that Emacs itself normally generates, such as command echoing, is suppressed entirely.)
+- It connects to The Server socket.
+- It requests The Server to evaluate the user's code using `server-eval-at`
+- Function: `server-eval-at`
+  - Create a new process used to contact The Server
+    - Emacs is creating a new network process
+    - It is now creating a process to speakg with itself
+  - It connects to the server (itself)
+  - It sends the `-eval` message with the `EXPR` you sent it
+    - This enters `server-eval-and-print` to handle the request
+    - It returns the normal result
+- In `server-eval-at` The Client `read`'s the result of `server-eval-and-print`. Since The Client is running in batch mode the value is output to directly to `STDOU` unquoted.
+- This is why `server-eval-at` doesn't quote its results and why `be2` is necessary.
+
+### Are `emacsclient` and Emacs the same thing?
+
+That is a good question. Since they both `eval` code. Is `emacsclient` really Emacs behind the scenes? The answer is in the code.
+
+You've already been reading `server.el` so you know that it is running inside Emacs. What about `emacsclient` though?
+
+Check out the Emacs source code [from Git](git clone https://github.com/mirrors/emacs.git) and open the file `./lib-src/emacsclient.c`.
+
+`emacsclient` is a C executable: it is not Emacs.
+
+Emacs and `emacsclient` are not the same thing.
 
 ## Contributing
 
