@@ -7,7 +7,7 @@
 
 ## 𝙏𝙇𝘿𝙍
 
-Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` in batch-mode instead because it directs the printer output directory (unquoted) to `STDOUT`:
+Couldn't make `emacsclient`'s `eval` return unquoted value so use `server-eval-at` in batch-mode instead because it directs the printer output directly (unquoted) to `STDOUT`:
 
 
 ``` emacs-lisp
